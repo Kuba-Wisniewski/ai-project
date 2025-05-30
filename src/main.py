@@ -4,7 +4,7 @@ from visualisation import *
 
 def main() -> None:
     # Uruchomienie analizy i wizualizacji
-    degrees = list(range(1, 100))
+    degrees = list(range(1, 21))
     results = bias_variance_analysis(degrees)
     plot_bias_variance_results(results)
 
