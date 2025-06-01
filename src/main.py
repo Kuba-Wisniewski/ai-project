@@ -5,7 +5,7 @@ from visualisation import *
 def main() -> None:
 
     # bias-variance
-    degrees = np.asarray(range(1, 21))
+    degrees = np.asarray(range(1, 200))
     results = bias_variance_analysis(degrees)
     plot_bias_variance_results(results)
 

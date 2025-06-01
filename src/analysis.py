@@ -12,8 +12,9 @@ def bias_variance_analysis(degrees: np.array, n_datasets: int = 100, n_test: int
 
         for _ in range(n_datasets):
             x_train, y_train = generate_train_data()
-            model = create_model(degree)
-            model.fit(x_train, y_train)
+            # model = create_model(degree)
+            model = create_gradient_model(degree)
+            model.fit(x_train, y_train)  # change that to gradient descent
             y_pred = model.predict(x_test)
             predictions.append(y_pred)
 
@@ -33,7 +34,8 @@ def fitness_analysis(degree: int = 5, n_examples: int = 5, n_test: int = 200) ->
 
     for i in range(n_examples):
         x_train, y_train = generate_train_data()
-        model = create_model(degree)
+        # model = create_model(degree)
+        model = create_gradient_model(degree)
         model.fit(x_train, y_train)  # change that to gradient descent
         y_pred = model.predict(x_test)
 

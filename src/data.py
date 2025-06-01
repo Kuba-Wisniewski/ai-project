@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline, Pipeline
+from model import GradientModel
 
 
 # returns a sine function points with random noise
@@ -21,3 +22,7 @@ def generate_test_data(n_samples: int = 30) -> (np.array, np.array):
 # returns a polynomial model
 def create_model(degree: int) -> Pipeline:
     return make_pipeline(PolynomialFeatures(degree), LinearRegression())
+
+
+def create_gradient_model(degree: int) -> GradientModel:
+    return GradientModel(degree)
