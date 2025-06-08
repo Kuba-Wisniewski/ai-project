@@ -1,5 +1,6 @@
 from data import *
 from models import *
+from plots import *
 
 import torch
 import random
@@ -23,7 +24,7 @@ def main() -> None:
     set_seed(2137)
     n_hids = np.unique(np.round(np.logspace(0, 3, 20))).astype(int)
 
-    x_train, y_train, x_test, y_test = get_data_poly(0.05)
+    x_train, y_train, x_test, y_test = get_data_sin(0.05)
 
     biases, variances = [], []
 
@@ -33,14 +34,8 @@ def main() -> None:
         biases.append(new_bias)
         variances.append(new_var)
 
-    total_err = biases + variances
-
-    plt.loglog(n_hids,biases,'o-',label='bias')
-    plt.loglog(n_hids,variances,'o-',label='variance')
-    #plt.loglog(n_hids,total_err,'o-',label='error')
-    plt.xlabel('Number of Hidden Units')
-    plt.ylabel('Test Error')
-    plt.show()
+    total_err = np.array(biases) + np.array(variances)
+    plot_bias_variance(n_hids, biases, variances, total_err)
 
 
 if __name__ == '__main__':
