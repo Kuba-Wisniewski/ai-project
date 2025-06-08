@@ -1,6 +1,4 @@
 import numpy as np
-import torch
-
 
 def relu(logits):
     return np.maximum(logits, 0)
@@ -15,6 +13,7 @@ def linear(logits):
     return logits
 
 
+# random weights and bias values
 class HLayer:
 
     def __init__(self, f_act, n_inputs: int = 1, n_outputs: int = 1):
@@ -22,7 +21,7 @@ class HLayer:
         self.n_outputs = n_outputs
 
         self.W = np.random.normal(0, 1, (n_inputs, n_outputs))
-        self.b = np.random.uniform(-np.pi, np.pi, size = (1, n_outputs))
+        self.b = np.random.uniform(-10, 10, size = (1, n_outputs))
         self.f_act = f_act
 
     def forward(self, X):
@@ -45,14 +44,12 @@ class OLayer:
 
 class NNModel:
 
-    def __init__(self, f_hid, f_out, n_inputs: int = 1, n_outputs: int = 1, n_hidden: int = 10, reg: int = 0):
+    def __init__(self, f_hid, f_out, n_inputs: int = 1, n_outputs: int = 1, n_hidden: int = 10):
         self.n_inputs = n_inputs
         self.n_outputs = n_outputs
 
         self.hidden = HLayer(f_hid, n_inputs, n_hidden)
         self.output = OLayer(f_out, n_hidden, n_outputs)
-
-        self.reg = reg
 
 
     def forward(self, X):
@@ -63,20 +60,15 @@ class NNModel:
     def train_output(self, x_train, y_train):
         hidden = self.hidden.forward(x_train)
 
-        if self.reg == 0:
-            hidden_pinv = np.linalg.pinv(hidden)
-            self.output.W = hidden_pinv.dot(y_train)
-        else:
-            # We use linalg.solve to find the solution to (H'H + reg*I) * W2 = H'y,
-            # equivalent to W2 = (H'H + reg*I)^(-1) * H'y
-            self.output.W = np.linalg.solve(hidden.T @ hidden + reg * np.eye(n_hidden), hidden.T @ y_train)
+        hidden_pinv = np.linalg.pinv(hidden)
+        self.output.W = hidden_pinv @ y_train
 
 
-def test(x_train, y_train, x_test, y_test, n_hidden = 10, reg = 0, num_models = 20):
+def test(x_train, y_train, x_test, y_test, n_hid = 10, num_models = 20):
     all_preds = []
 
     for _ in range(num_models):
-        model = NNModel(f_hid=relu, f_out=linear, n_hidden=n_hidden, reg=reg)
+        model = NNModel(f_hid=relu, f_out=linear, n_hidden=n_hid)
         model.train_output(x_train, y_train)
         y_pred = model.forward(x_test)
         all_preds.append(y_pred)
