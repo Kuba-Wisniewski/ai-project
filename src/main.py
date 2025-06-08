@@ -25,9 +25,19 @@ def main() -> None:
 
     x_train, y_train, x_test, y_test = get_data_poly(0.05)
 
-    test_errs = [sweep_test(x_train, y_train, x_test, y_test, n_hidden=n_hid, n_reps=100, reg = 0.0) for n_hid in n_hids]
+    biases, variances = [], []
 
-    plt.loglog(n_hids,test_errs,'o-',label='Test')
+    for n_hid in n_hids:
+        new_bias, new_var = test(x_train, y_train, x_test, y_test, n_hid, 0)
+
+        biases.append(new_bias)
+        variances.append(new_var)
+
+    total_err = biases + variances
+
+    plt.loglog(n_hids,biases,'o-',label='bias')
+    plt.loglog(n_hids,variances,'o-',label='variance')
+    #plt.loglog(n_hids,total_err,'o-',label='error')
     plt.xlabel('Number of Hidden Units')
     plt.ylabel('Test Error')
     plt.show()
