@@ -11,7 +11,7 @@ def plot_fit(hid_size: int, x_train, y_train, x_test, y_test, y_pred):
     plt.xlabel('Input Feature')
     plt.ylabel('Target Output')
 
-    plt.savefig(f'hid_size_{hid_size}.png')
+    # plt.savefig(f'hid_size_{hid_size}.png')
     plt.show()
 
 
@@ -36,5 +36,5 @@ def plot_bias_variance(n_hids, biases, variances, total_err) -> None:
     plt.legend()
     plt.grid(True, which="both", ls="-", alpha=0.2)
 
-    plt.savefig('fig2.png')
+    # plt.savefig('fig2.png')
     plt.show()

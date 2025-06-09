@@ -58,6 +58,9 @@ class NNModel:
 
 
     def train_output(self, x_train, y_train):
+        # h @ W = y
+        # W = y @ h^-1 - faster than gradient
+
         hidden = self.hidden.forward(x_train)
 
         hidden_pinv = np.linalg.pinv(hidden)
