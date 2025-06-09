@@ -20,10 +20,12 @@ def main() -> None:
     biases, variances = [], []
 
     for hid_size in hidden_layer_sizes:
-        new_bias, new_var = test(x_train, y_train, x_test, y_test, hid_size)
+        new_bias, new_var, y_pred = test(x_train, y_train, x_test, y_test, hid_size)
 
         biases.append(new_bias)
         variances.append(new_var)
+
+        # plot_fit(hid_size, x_train, y_train, x_test, y_test, y_pred)
 
     total_err = np.array(biases) + np.array(variances)
     plot_bias_variance(hidden_layer_sizes, biases, variances, total_err)

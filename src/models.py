@@ -79,4 +79,4 @@ def test(x_train, y_train, x_test, y_test, n_hid = 10, num_models = 20):
     bias_squared = np.mean((avg_pred - y_test) ** 2)
     variance = np.mean(np.var(all_preds, axis=0))
 
-    return bias_squared, variance
+    return bias_squared, variance, avg_pred

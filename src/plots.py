@@ -1,15 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 # not used - for testing
-def plot_fit(x_train, y_train, x_test, y_test, y_pred = 0):
-    plt.plot(x_test, y_test,label='Test data')
-    plt.plot(x_train, y_train,'o',label='Training data')
-    if y_pred:
-        plt.plot(x_test, y_pred, label='Prediction')
+def plot_fit(hid_size: int, x_train, y_train, x_test, y_test, y_pred):
+    plt.plot(x_test, y_test, color='r', label='Test data')
+    plt.plot(x_train, y_train,'o', color='g', label='Training data')
+    plt.plot(x_test, y_pred, color='b', label=f'Prediction for {hid_size} neurons')
     plt.legend()
     plt.xlabel('Input Feature')
     plt.ylabel('Target Output')
+
+    plt.savefig(f'hid_size_{hid_size}.png')
     plt.show()
 
 
