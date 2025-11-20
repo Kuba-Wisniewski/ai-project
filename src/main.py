@@ -1,18 +1,33 @@
-from analysis import *
-from visualisation import *
+from data import *
+from models import *
+from plots import *
+
+import random
+
+
+def set_random_seed(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
 
 
 def main() -> None:
+    set_random_seed(2137)
+    hidden_layer_sizes = np.unique(np.round(np.logspace(0, 3, 20))).astype(int)
 
-    # bias-variance
-    degrees = np.asarray(range(1, 200))
-    results = bias_variance_analysis(degrees)
-    plot_bias_variance_results(results)
+    x_train, y_train, x_test, y_test = get_data_sin(0.05)
 
-    # model fits for polynomial degree of 1, 5, 15
-    for deg in [1, 5, 15]:
-        x_test, y_test, results = fitness_analysis(deg)
-        plot_model_fits(deg, x_test, y_test, results)
+    biases, variances = [], []
+
+    for hid_size in hidden_layer_sizes:
+        new_bias, new_var, y_pred = test(x_train, y_train, x_test, y_test, hid_size)
+
+        biases.append(new_bias)
+        variances.append(new_var)
+
+        plot_fit(hid_size, x_train, y_train, x_test, y_test, y_pred)
+
+    total_err = np.array(biases) + np.array(variances)
+    plot_bias_variance(hidden_layer_sizes, biases, variances, total_err)
 
 
 if __name__ == '__main__':

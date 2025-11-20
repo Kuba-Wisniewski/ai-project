@@ -1,28 +1,21 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.pipeline import make_pipeline, Pipeline
-from model import GradientModel
 
 
-# returns a sine function points with random noise
-def generate_train_data(n_samples: int = 30, noise_std: int = 0.1) -> (np.array, np.array):
-    X = np.linspace(-1, 1, n_samples)
-    y = np.sin(np.pi * X) + np.random.normal(0, noise_std, size=n_samples)
-    return X.reshape(-1, 1), y
+def get_data_sin(noise_dev: float = 0.0) -> (np.array, np.array):
+    x_test = np.linspace(-np.pi, np.pi, 100)
+    y_test = np.sin(x_test)
+
+    x_train = np.linspace(-np.pi, np.pi, 10)
+    y_train = np.sin(x_train) + noise_dev * np.random.normal(size=10)
+
+    return x_train.reshape(10,1), y_train.reshape(10,1), x_test.reshape(100,1), y_test.reshape(100,1)
 
 
-# returns a sine function points
-def generate_test_data(n_samples: int = 30) -> (np.array, np.array):
-    X = np.linspace(-1, 1, n_samples)
-    y = np.sin(np.pi * X)
-    return X.reshape(-1, 1), y
+def get_data_poly(noise_dev: float = 0.0) -> (np.array, np.array):
+    x_test = np.linspace(-10, 10, 100)
+    y_test = x_test ** 3 + x_test ** 2 + x_test
 
+    x_train = np.linspace(-10, 10, 10)
+    y_train = x_train ** 3 + x_train ** 2 + x_train + noise_dev * np.random.normal(size=10)
 
-# returns a polynomial model
-def create_model(degree: int) -> Pipeline:
-    return make_pipeline(PolynomialFeatures(degree), LinearRegression())
-
-
-def create_gradient_model(degree: int) -> GradientModel:
-    return GradientModel(degree)
+    return x_train.reshape(10,1), y_train.reshape(10,1), x_test.reshape(100,1), y_test.reshape(100,1)
